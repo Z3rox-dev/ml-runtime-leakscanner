@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ml-runtime-debug:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ml-runtime-instrumentation
+    
+    # Monta la directory del progetto come volume
+    volumes:
+      - .:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    
+    # Variabili d'ambiente
+    environment:
+      - DISPLAY=${DISPLAY}
+      - TERM=xterm-256color
+    
+    # Accesso privilegiato per debugging e instrumentation
+    privileged: true
+    
+    # Mantieni il container attivo
+    tty: true
+    stdin_open: true
+    
+    # Network mode per accesso completo
+    network_mode: host
+    
+    # Working directory
+    working_dir: /workspace
+    
+    # Limiti di risorse (opzionali)
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
